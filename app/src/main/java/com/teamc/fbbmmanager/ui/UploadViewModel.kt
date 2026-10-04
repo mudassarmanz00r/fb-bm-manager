@@ -41,7 +41,6 @@ class UploadViewModel(app: Application) : AndroidViewModel(app) {
     private val gson = Gson()
 
     var mode by mutableStateOf(UploadMode.BULK)
-        private set
 
     /** Bulk mode: one video for all selected pages. */
     var bulkVideoUri by mutableStateOf<Uri?>(null)
@@ -74,10 +73,6 @@ class UploadViewModel(app: Application) : AndroidViewModel(app) {
         private set
 
     private var workObserver: Observer<List<WorkInfo>>? = null
-
-    fun setMode(m: UploadMode) {
-        mode = m
-    }
 
     fun onDescriptionChange(v: String) {
         description = v

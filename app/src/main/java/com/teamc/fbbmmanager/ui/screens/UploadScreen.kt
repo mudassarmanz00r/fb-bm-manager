@@ -115,12 +115,12 @@ fun UploadScreen(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     FilterChip(
                         selected = uploadVm.mode == UploadMode.BULK,
-                        onClick = { uploadVm.setMode(UploadMode.BULK) },
+                        onClick = { uploadVm.mode = UploadMode.BULK },
                         label = { Text(stringResource(R.string.upload_mode_bulk)) }
                     )
                     FilterChip(
                         selected = uploadVm.mode == UploadMode.PER_PAGE,
-                        onClick = { uploadVm.setMode(UploadMode.PER_PAGE) },
+                        onClick = { uploadVm.mode = UploadMode.PER_PAGE },
                         label = { Text(stringResource(R.string.upload_mode_per_page)) }
                     )
                 }
