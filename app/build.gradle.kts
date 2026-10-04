@@ -29,6 +29,8 @@ android {
         manifestPlaceholders["metaAppId"] = metaAppId
         buildConfigField("String", "META_APP_ID", "\"$metaAppId\"")
         buildConfigField("String", "GRAPH_API_VERSION", "\"v26.0\"")
+
+        multiDexEnabled = true
     }
 
     buildTypes {
