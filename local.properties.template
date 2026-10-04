@@ -1,0 +1,3 @@
+# Copy this file to local.properties and fill in your Meta App ID.
+# Create the app at https://developers.facebook.com/apps (see README.md).
+META_APP_ID=REPLACE_WITH_YOUR_META_APP_ID

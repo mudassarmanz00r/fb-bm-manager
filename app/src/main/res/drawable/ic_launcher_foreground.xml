@@ -1,0 +1,33 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Rounded-square badge with indigo→deep gradient -->
+    <path
+        android:pathData="M54,14 m-34,0 a34,34 0 1,0 68,0 a34,34 0 1,0 -68,0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="20"
+                android:startY="20"
+                android:endX="88"
+                android:endY="88">
+                <item android:offset="0" android:color="#6C7BFF" />
+                <item android:offset="1" android:color="#4A56D6" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Upload arrow (cloud upload glyph, white) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,66 L54,42 M46,50 L54,42 L62,50"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <!-- Reel play dot accent (gold) -->
+    <path
+        android:fillColor="#E8B44A"
+        android:pathData="M54,30 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0" />
+</vector>

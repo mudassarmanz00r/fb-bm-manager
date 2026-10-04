@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FB BM Page Manager</string>
+    <!-- Paste your Meta App Client Token here (App Settings → Client Token).
+         Used by the Facebook SDK; safe to ship in the app per Meta docs. -->
+    <string name="facebook_client_token">REPLACE_WITH_CLIENT_TOKEN</string>
+
+    <!-- Login -->
+    <string name="login_title">FB BM Page Manager</string>
+    <string name="login_subtitle">Log in with Facebook, add your Business Manager IDs, then manage pages, check status and publish Reels in bulk.</string>
+    <string name="login_button">Continue with Facebook</string>
+
+    <!-- BM manager -->
+    <string name="bm_title">Business Managers</string>
+    <string name="bm_heading">Your Business Managers</string>
+    <string name="bm_body">Add the numeric Business Manager IDs from Business Settings → Business Info. You can manage several BMs and switch between them any time.</string>
+    <string name="bm_field_label">BM ID (numbers only)</string>
+    <string name="bm_add">Add BM</string>
+    <string name="bm_continue">Continue</string>
+    <string name="bm_empty_title">No Business Manager added yet</string>
+    <string name="bm_empty_body">Add your first Business Manager ID above to list its connected Pages.</string>
+    <string name="bm_remove_confirm_title">Remove this BM?</string>
+    <string name="bm_remove_confirm_body">Pages from this Business Manager will be removed from the app. You can add it again any time.</string>
+    <string name="bm_remove">Remove</string>
+    <string name="bm_cancel">Cancel</string>
+    <string name="bm_selected">Selected</string>
+
+    <!-- Pages list -->
+    <string name="pages_title">Pages</string>
+    <string name="pages_upload">Publish reels</string>
+    <string name="pages_reload">Reload</string>
+    <string name="pages_logout">Log out</string>
+    <string name="pages_manage_bms">Manage Business Managers</string>
+    <string name="pages_switch_bm">Switch Business Manager</string>
+    <string name="pages_toggle_theme">Toggle dark / light theme</string>
+    <string name="pages_owned">Owned</string>
+    <string name="pages_client">Client</string>
+    <string name="pages_followers">followers</string>
+    <string name="pages_token_ready">Page token ready</string>
+    <string name="pages_token_fetching">Fetching page token…</string>
+    <string name="pages_empty_title">No pages found</string>
+    <string name="pages_empty_body">This Business Manager has no connected Pages, or the app is missing the business_management permission. Check the BM ID or try another one.</string>
+    <string name="pages_error_title">Something went wrong</string>
+    <string name="pages_retry">Retry</string>
+    <string name="pages_relogin">Log in again</string>
+    <string name="pages_relogin_body">Your Facebook session expired. Please log in again to continue.</string>
+
+    <!-- Page detail -->
+    <string name="detail_back">Back</string>
+    <string name="detail_tab_status">Status</string>
+    <string name="detail_tab_stats">Stats</string>
+    <string name="detail_tab_earnings">Earnings</string>
+    <string name="detail_videos">Uploaded videos</string>
+    <string name="detail_monetization">Monetization</string>
+    <string name="detail_violations">Violations</string>
+    <string name="detail_insights">Insights</string>
+    <string name="detail_earnings">Earnings</string>
+    <string name="detail_unavailable">Unavailable</string>
+    <string name="detail_loading">Loading…</string>
+    <string name="detail_stat_views">Views</string>
+    <string name="detail_stat_reach">Reach</string>
+    <string name="detail_stat_engagements">Post engagements</string>
+    <string name="detail_stat_follows">New follows</string>
+    <string name="detail_stat_video_views">Video views</string>
+    <string name="detail_monet_note">Note: Content Monetization / in-stream ads eligibility has no public Graph API — always verify in Meta Business Suite → Monetization.</string>
+    <string name="detail_insights_note">Insights need the read_insights permission (Meta App Review for real users).</string>
+    <string name="detail_dash">—</string>
+
+    <!-- Upload -->
+    <string name="upload_title">Publish Reels</string>
+    <string name="upload_mode_label">Upload mode</string>
+    <string name="upload_mode_bulk">One video → all pages</string>
+    <string name="upload_mode_per_page">Per-page videos</string>
+    <string name="upload_bulk_video_label">Video for all selected pages</string>
+    <string name="upload_pick_video">Tap to choose a video</string>
+    <string name="upload_caption_label">Reel caption / description</string>
+    <string name="upload_pages_label">Pages (%1$d selected)</string>
+    <string name="upload_select_all">All</string>
+    <string name="upload_select_none">None</string>
+    <string name="upload_limit_note">30 API-published reels per 24 hours (Meta limit).</string>
+    <string name="upload_background_note">Uploads run in the background (WorkManager) — you can leave the app.</string>
+    <string name="upload_publish_button">Publish to %1$d page(s)</string>
+    <string name="upload_preparing">Preparing…</string>
+    <string name="upload_progress_title">Upload progress</string>
+    <string name="upload_state_queued">Queued</string>
+    <string name="upload_state_uploading">Uploading…</string>
+    <string name="upload_state_done">Published ✓ (id %1$s)</string>
+    <string name="upload_state_failed">Failed: %1$s</string>
+    <string name="upload_no_token">no token</string>
+    <string name="upload_per_page_label">Video for %1$s</string>
+    <string name="upload_back">Back</string>
+    <string name="upload_retry_page">Retry</string>
+    <string name="upload_error_no_targets">Select at least one page with a video and a page access token.</string>
+    <string name="upload_error_unreadable">Could not read the selected video file(s), or a file exceeds the size limit.</string>
+    <string name="upload_spec_note">Reels spec: MP4, 9:16, 1080×1920 recommended, 3–90 seconds.</string>
+
+    <!-- Generic -->
+    <string name="action_retry">Retry</string>
+</resources>
