@@ -29,7 +29,7 @@ class PagesViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repository = (app as FbBmApp).repository
     private val sessionStore = (app as FbBmApp).sessionStore
-    private val auth = app.authManager
+    private val auth = (app as FbBmApp).authManager
     private val sessionVm get() = SessionHolder.sessionVm
 
     var uiState by mutableStateOf<PagesUiState>(PagesUiState.Idle)

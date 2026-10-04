@@ -15,7 +15,12 @@ import com.google.gson.Gson
 import com.teamc.fbbmmanager.FbBmApp
 import com.teamc.fbbmmanager.data.model.FbPage
 import com.teamc.fbbmmanager.data.model.PageSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 
 /** One reel upload job: a page + a local video file + caption. */
@@ -61,61 +66,71 @@ class UploadWorker(
         val repository = (applicationContext as FbBmApp).repository
         val results = mutableListOf<JobResult>()
 
-        jobs.forEachIndexed { index, job ->
-            setForeground(createForegroundInfo("Uploading to ${job.pageName} (${index + 1}/${jobs.size})"))
-            setProgress(workDataOf(PROGRESS_PAGE_ID to job.pageId, PROGRESS_PCT to 0, PROGRESS_STATE to "UPLOADING"))
+        // setProgress() is suspend, but the uploader's onProgress callback is
+        // a plain (non-suspend) lambda -- bridge progress updates through a
+        // child scope, cancelled in the finally block below.
+        val progressScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        try {
+            jobs.forEachIndexed { index, job ->
+                setForeground(createForegroundInfo("Uploading to ${job.pageName} (${index + 1}/${jobs.size})"))
+                setProgress(workDataOf(PROGRESS_PAGE_ID to job.pageId, PROGRESS_PCT to 0, PROGRESS_STATE to "UPLOADING"))
 
-            var publishedId: String? = null
-            var lastError: String? = null
-            var attempt = 0
-            while (attempt < MAX_ATTEMPTS && publishedId == null) {
-                attempt++
-                try {
-                    val page = FbPage(
-                        id = job.pageId,
-                        name = job.pageName,
-                        followersCount = null,
-                        pictureUrl = null,
-                        accessToken = job.pageToken,
-                        source = PageSource.OWNED
+                var publishedId: String? = null
+                var lastError: String? = null
+                var attempt = 0
+                while (attempt < MAX_ATTEMPTS && publishedId == null) {
+                    attempt++
+                    try {
+                        val page = FbPage(
+                            id = job.pageId,
+                            name = job.pageName,
+                            followersCount = null,
+                            pictureUrl = null,
+                            accessToken = job.pageToken,
+                            source = PageSource.OWNED
+                        )
+                        val result = repository.publishReel(
+                            page = page,
+                            videoFile = File(job.filePath),
+                            description = job.description,
+                            onProgress = { pct ->
+                                progressScope.launch {
+                                    setProgress(
+                                        workDataOf(
+                                            PROGRESS_PAGE_ID to job.pageId,
+                                            PROGRESS_PCT to pct,
+                                            PROGRESS_STATE to "UPLOADING"
+                                        )
+                                    )
+                                }
+                            }
+                        )
+                        result
+                            .onSuccess { publishedId = it }
+                            .onFailure {
+                                lastError = it.message ?: "Upload failed"
+                                if (attempt < MAX_ATTEMPTS) delay(RETRY_DELAY_MS)
+                            }
+                    } catch (e: Exception) {
+                        lastError = e.message ?: "Upload failed"
+                        if (attempt < MAX_ATTEMPTS) delay(RETRY_DELAY_MS)
+                    }
+                }
+
+                if (publishedId != null) {
+                    setProgress(
+                        workDataOf(PROGRESS_PAGE_ID to job.pageId, PROGRESS_PCT to 100, PROGRESS_STATE to "DONE")
                     )
-                    val result = repository.publishReel(
-                        page = page,
-                        videoFile = File(job.filePath),
-                        description = job.description,
-                        onProgress = { pct ->
-                            setProgress(
-                                workDataOf(
-                                    PROGRESS_PAGE_ID to job.pageId,
-                                    PROGRESS_PCT to pct,
-                                    PROGRESS_STATE to "UPLOADING"
-                                )
-                            )
-                        }
+                    results.add(JobResult(job.pageId, true, publishedId = publishedId))
+                } else {
+                    setProgress(
+                        workDataOf(PROGRESS_PAGE_ID to job.pageId, PROGRESS_PCT to 0, PROGRESS_STATE to "FAILED")
                     )
-                    result
-                        .onSuccess { publishedId = it }
-                        .onFailure {
-                            lastError = it.message ?: "Upload failed"
-                            if (attempt < MAX_ATTEMPTS) delay(RETRY_DELAY_MS)
-                        }
-                } catch (e: Exception) {
-                    lastError = e.message ?: "Upload failed"
-                    if (attempt < MAX_ATTEMPTS) delay(RETRY_DELAY_MS)
+                    results.add(JobResult(job.pageId, false, error = lastError ?: "Upload failed"))
                 }
             }
-
-            if (publishedId != null) {
-                setProgress(
-                    workDataOf(PROGRESS_PAGE_ID to job.pageId, PROGRESS_PCT to 100, PROGRESS_STATE to "DONE")
-                )
-                results.add(JobResult(job.pageId, true, publishedId = publishedId))
-            } else {
-                setProgress(
-                    workDataOf(PROGRESS_PAGE_ID to job.pageId, PROGRESS_PCT to 0, PROGRESS_STATE to "FAILED")
-                )
-                results.add(JobResult(job.pageId, false, error = lastError ?: "Upload failed"))
-            }
+        } finally {
+            progressScope.cancel()
         }
 
         return Result.success(workDataOf(OUTPUT_RESULTS to gson.toJson(results)))

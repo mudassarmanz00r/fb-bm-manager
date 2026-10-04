@@ -16,7 +16,7 @@ import com.teamc.fbbmmanager.data.PageCache
 class SessionViewModel(app: Application) : AndroidViewModel(app) {
 
     private val auth = (app as FbBmApp).authManager
-    private val session = app.sessionStore
+    private val session = (app as FbBmApp).sessionStore
 
     var isLoggedIn by mutableStateOf(auth.isLoggedIn())
         private set
